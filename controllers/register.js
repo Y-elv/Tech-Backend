@@ -1,9 +1,15 @@
+import bcrypt from "bcrypt";
 import signup from "../models/register.js";
 const register =async(req,res)=>{
 
     try{
+    
         const data=req.body;
+        const salt=await bcrypt.genSalt(8)
+        const hashedPassword=await bcrypt.hash(data.password,salt)
+        data.password=hashedPassword
         const check=await signup.findOne({email:data.email})
+      
         if(check){
            
             return res.status(409).json({

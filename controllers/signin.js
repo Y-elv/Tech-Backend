@@ -1,24 +1,30 @@
 import signUp from '../models/register.js';
-import signIn from '../models/signin.js';
-
+import bcrypt from 'bcrypt';
 const signInController = async (req, res) => {
   try {
     const data = req.body;
+
     const check = await signUp.findOne({ email: data.email });
+
     if (check) {
-      return res.status(409).json({
-        message: "Welcome to home",
-      });
+      let compare = await  bcrypt.compare(data.password, check.password)
+      
+      if (compare == true) {
+        return res.status(202).json({
+          message: "login successfu"
+        });
+      }else{
+        return res.status(409).json({
+          message: "please enter correct password"
+        });
+      }
     } else {
-      let signInstance = new signIn({
-        email: data.email,
-        password: data.password,
-      });
 
-    
 
-      res.status(200).json({
-        message: "Go back to sign up",
+
+
+      res.status(409).json({
+        message: "please sign up",
       });
     }
   } catch (err) {
