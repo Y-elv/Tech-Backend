@@ -9,10 +9,13 @@ import mongoose from "mongoose";
 import signup from './routes/register.js'
 import signin from './routes/signin.js'
 import readArticleLimit  from "./routes/articles.js";
+import dotenv from "dotenv"
 
 
 const app=express();
 app.use(cors())
+
+dotenv.config();
 
 
 
@@ -32,7 +35,7 @@ app.use("/api/v1",readArticleLimit)
 // connect to mongodb
 
 const connectTomongoDb=()=>{
-    mongoose.connect("mongodb+srv://mugishaelvis456:umugishamwiza@cluster0.0ooycod.mongodb.net/?retryWrites=true&w=majority")
+    mongoose.connect(`mongodb+srv://mugishaelvis456:${process.env.MONGODB_PASSWORD}@cluster0.0ooycod.mongodb.net/?retryWrites=true&w=majority`)
 
     .then(()=>{
         console.log("mongodb connected")
